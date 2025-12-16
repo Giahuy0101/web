@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bài tập Web Server Apache</title>
     <style>
-        body,
-        html {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body,
+        html {
             overflow: hidden;
-            background: radial-gradient(circle at center, #1a1a2e, #000000);
-            font-family: "Times New Roman", serif;
+            background: radial-gradient(ellipse at center, #0a1628, #000000);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         #ui {
@@ -26,55 +30,42 @@
             top: 20px;
             width: 100%;
             text-align: center;
-            letter-spacing: 5px;
-            font-weight: 300;
+            letter-spacing: 8px;
+            font-weight: 700;
             font-size: 2.5rem;
-            color: #FFD700;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            color: #fff;
+            text-shadow: 
+                0 0 10px rgba(255, 215, 0, 0.8),
+                0 0 20px rgba(255, 215, 0, 0.6),
+                0 0 30px rgba(255, 0, 0, 0.4),
+                0 2px 5px rgba(0, 0, 0, 0.5);
             margin: 0;
+            animation: titleGlow 3s ease-in-out infinite;
         }
 
-        #hint {
-            position: absolute;
-            bottom: 200px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 35px;
-            border-radius: 30px;
-            background: rgba(255, 215, 0, 0.15);
-            border: 2px solid rgba(255, 215, 0, 0.5);
-            color: #FFD700;
-            font-family: sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            pointer-events: auto;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        #hint:hover {
-            background: rgba(255, 215, 0, 0.25);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
-            transform: translateX(-50%) scale(1.05);
-        }
-
-        @keyframes pulse {
+        @keyframes titleGlow {
             0%, 100% {
-                box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+                text-shadow: 
+                    0 0 10px rgba(255, 215, 0, 0.8),
+                    0 0 20px rgba(255, 215, 0, 0.6),
+                    0 0 30px rgba(255, 0, 0, 0.4);
             }
             50% {
-                box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+                text-shadow: 
+                    0 0 20px rgba(255, 215, 0, 1),
+                    0 0 30px rgba(255, 215, 0, 0.8),
+                    0 0 40px rgba(255, 0, 0, 0.6);
             }
         }
+
+
 
         #loading {
             position: fixed;
             inset: 0;
-            background: #000;
+            background: linear-gradient(135deg, #000000, #0a1628);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 999;
@@ -82,12 +73,13 @@
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 2px solid rgba(255, 215, 0, 0.2);
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 215, 0, 0.2);
             border-top-color: #ffd700;
+            border-bottom-color: #ff6b6b;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
         }
 
         @keyframes spin {
@@ -96,41 +88,42 @@
             }
         }
 
-        #info-panel {
-            position: fixed;
-            top: 80px;
-            right: 30px;
-            padding: 25px 35px;
-            background: rgba(10, 10, 20, 0.7);
-            border: 2px solid rgba(255, 215, 0, 0.5);
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-            backdrop-filter: blur(15px);
-            text-align: center;
-            color: #FFD700;
-            z-index: 100;
-            font-family: 'Times New Roman', serif;
-            pointer-events: none;
-        }
-
-        #info-panel h2 {
-            margin: 0 0 12px 0;
-            font-size: 1.6rem;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 1);
+        .loading-text {
+            margin-top: 25px;
+            color: #ffd700;
+            font-size: 1.2rem;
             letter-spacing: 3px;
+            animation: loadFade 1.5s ease-in-out infinite;
         }
 
-        #info-panel h3 {
-            margin: 8px 0;
-            font-size: 1.3rem;
-            font-weight: normal;
-            color: #fff;
+        @keyframes loadFade {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
-        #info-panel p {
-            margin: 5px 0 0 0;
-            font-size: 1rem;
-            color: #ddd;
+
+
+
+
+        .snowflake-ui {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 20px;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 4px;
+            }
         }
     </style>
 </head>
@@ -139,18 +132,12 @@
     <!-- Loading Screen -->
     <div id="loading">
         <div class="spinner"></div>
+        <div class="loading-text">LOADING MAGIC...</div>
     </div>
 
     <!-- UI Overlay -->
     <div id="ui">
         <h1>🎄 MERRY CHRISTMAS 🎄</h1>
-    </div>
-
-    <!-- Info Panel -->
-    <div id="info-panel">
-        <h2>BÀI TẬP WEB SERVER</h2>
-        <h3>Nguyễn Văn Thưởng</h3>
-        <p>MSSV: 2431121076</p>
     </div>
 
     <script type="importmap">
@@ -171,57 +158,63 @@
         const CUBE_COUNT = 1500;
         const SNOW_COUNT = 1000;
         const GROUND_COUNT = 15000;
-        const TOTAL = SPHERE_COUNT + CUBE_COUNT;
 
         // --- SCENE ---
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x1a1a2e, 0.015);
+        scene.fog = new THREE.FogExp2(0x0a1628, 0.012);
 
         const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 1000);
-        camera.position.set(0, 5, 50);
+        camera.position.set(0, 0, 50);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(innerWidth, innerHeight);
         renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.0;
+        renderer.toneMappingExposure = 1.2;
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         document.body.appendChild(renderer.domElement);
 
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
         controls.enablePan = false;
         controls.enableZoom = false;
         controls.minPolarAngle = Math.PI / 3;
         controls.maxPolarAngle = Math.PI / 1.8;
+        controls.autoRotate = false;
+        controls.autoRotateSpeed = 0.5;
 
-        // --- LIGHTING (PBR GOLD) ---
-        scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+        // --- LIGHTING ---
+        scene.add(new THREE.AmbientLight(0xffffff, 0.3));
 
-        const sun = new THREE.DirectionalLight(0xffdf80, 2.5);
+        const sun = new THREE.DirectionalLight(0xffdf80, 2.8);
         sun.position.set(20, 30, 20);
         sun.castShadow = true;
         scene.add(sun);
 
-        const goldPoint = new THREE.PointLight(0xffaa00, 2, 50);
+        const goldPoint = new THREE.PointLight(0xffaa00, 2.5, 60);
         goldPoint.position.set(0, 10, 10);
         scene.add(goldPoint);
 
-        // --- MATERIALS (PBR) ---
+        const redPoint = new THREE.PointLight(0xff0000, 1.5, 40);
+        redPoint.position.set(-10, 5, -10);
+        scene.add(redPoint);
+
+        // --- MATERIALS ---
         const sphereMat = new THREE.MeshStandardMaterial({
             color: 0xffffff,
-            roughness: 0.2,
-            metalness: 0.9,
+            roughness: 0.15,
+            metalness: 0.95,
             emissive: 0xaa4400,
-            emissiveIntensity: 0.2
+            emissiveIntensity: 0.25
         });
         const cubeMat = new THREE.MeshStandardMaterial({
             color: 0xffffff,
             roughness: 0.1,
-            metalness: 0.7,
+            metalness: 0.8,
             emissive: 0x004400,
-            emissiveIntensity: 0.3
+            emissiveIntensity: 0.35
         });
 
         // --- GEOMETRY ---
@@ -238,7 +231,6 @@
         scene.add(sphereMesh);
         scene.add(cubeMesh);
 
-        /* Arrays */
         const sCur = [], sTgt = [];
         const cCur = [], cTgt = [];
         const meshes = [sphereMesh, cubeMesh];
@@ -247,7 +239,6 @@
         const tgts = [sTgt, cTgt];
 
         // --- TARGET GENERATION ---
-        // 1. Branched Tree
         const treeBase = -10, treeH = 25;
         function getTreePos(i, total, offsetAngle) {
             const h = treeH;
@@ -261,7 +252,6 @@
             return { x: Math.cos(a) * r, y: y, z: Math.sin(a) * r };
         }
 
-        // 2. Explode
         function getExplodePos() {
             const r = 15 + Math.random() * 30;
             const theta = Math.random() * Math.PI * 2;
@@ -273,14 +263,14 @@
             };
         }
 
-        // 3. Text
+        // Text
         const textPoints = [];
         (function () {
             const c = document.createElement('canvas');
             c.width = 1000;
             c.height = 300;
             const ctx = c.getContext('2d');
-            ctx.font = 'bold 120px "Times New Roman"';
+            ctx.font = 'bold 120px Arial';
             ctx.fillStyle = 'white';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -296,7 +286,7 @@
             }
         })();
 
-        // INIT DATA
+        // INIT
         const SPHERE_COLORS = [0xffd700, 0xff0000, 0xff8c00];
         const CUBE_COLORS = [0xffd700, 0x006400, 0xffffff];
 
@@ -310,27 +300,25 @@
             for (let i = 0; i < count; i++) {
                 const ex = getExplodePos();
                 cur.push(ex);
-
                 const tp = getTreePos(i, count, idx);
                 tgt.push(tp);
-
                 const c = new THREE.Color(palette[Math.floor(Math.random() * palette.length)]);
                 mesh.setColorAt(i, c);
             }
             mesh.instanceMatrix.needsUpdate = true;
         });
 
-        // --- STAR (Top Decor) ---
+        // --- STAR ---
         const starMat = new THREE.MeshStandardMaterial({
             color: 0xffd700,
             emissive: 0xffd700,
-            emissiveIntensity: 1,
+            emissiveIntensity: 1.2,
             metalness: 1,
             roughness: 0
         });
         const starGeo = new THREE.OctahedronGeometry(1.5, 0);
         const star = new THREE.Mesh(starGeo, starMat);
-        star.position.set(0, treeBase + treeH + 1, 0);
+        star.position.set(0, treeBase + treeH - 2, 0);
         scene.add(star);
 
         const sPartGeo = new THREE.OctahedronGeometry(0.2, 0);
@@ -342,7 +330,7 @@
             const r = 2 + Math.random();
             starDummy.position.set(
                 (Math.random() - 0.5) * r,
-                (Math.random() - 0.5) * r + 17,
+                (Math.random() - 0.5) * r + 14,
                 (Math.random() - 0.5) * r
             );
             starDummy.updateMatrix();
@@ -364,7 +352,7 @@
             color: 0xffffff,
             size: 0.3,
             transparent: true,
-            opacity: 0.6
+            opacity: 0.7
         });
         const snow = new THREE.Points(snowGeo, snowMat);
         scene.add(snow);
@@ -384,12 +372,12 @@
             color: 0xffffff,
             size: 0.2,
             transparent: true,
-            opacity: 0.5
+            opacity: 0.6
         });
         const ground = new THREE.Points(gGeo, gMat);
         scene.add(ground);
 
-        // --- STATE LOGIC ---
+        // --- STATE ---
         let state = 0;
 
         window.addEventListener('click', () => {
@@ -429,27 +417,6 @@
             const l = document.getElementById('loading');
             l.style.opacity = 0;
             setTimeout(() => l.remove(), 800);
-
-            // Audio handling
-            const audio = new Audio("./lastchistmas.mp3");
-            audio.loop = true;
-            audio.volume = 0.5;
-
-            const playAudio = () => {
-                audio.play().then(() => {
-                    ['click', 'keydown', 'touchstart'].forEach(e =>
-                        window.removeEventListener(e, playAudio)
-                    );
-                }).catch(err => {
-                    console.log("Autoplay waiting for interaction");
-                });
-            };
-
-            playAudio();
-
-            ['click', 'keydown', 'touchstart'].forEach(e =>
-                window.addEventListener(e, playAudio)
-            );
         });
 
         function animate() {
@@ -495,7 +462,7 @@
                 else mesh.rotation.y = 0;
             });
 
-            star.rotation.y += dt;
+            star.rotation.y += dt * 1.5;
             star.rotation.z = Math.sin(time) * 0.2;
             starPartMesh.rotation.y -= dt * 0.5;
 
@@ -515,7 +482,6 @@
             camera.updateProjectionMatrix();
             renderer.setSize(innerWidth, innerHeight);
         });
-        
     </script>
 </body>
 </html>
