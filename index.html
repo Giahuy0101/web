@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Cosmetics Dashboard</title>
+<link rel="stylesheet" href="dboard.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">C</div>
+                <span class="logo-text">CRM Cosmetics</span>
+            </div>
+            
+            <div class="sidebar-content">
+                <div class="menu-title">MENU CHÍNH</div>
+                <div class="menu-item active">
+                    <span>📊</span>
+                    <span>Dashboard</span>
+                </div>
+                <div class="menu-item">
+                    <span>👥</span>
+                    <span>Khách hàng</span>
+                    <span class="badge">12</span>
+                </div>
+                <div class="menu-item">
+                    <span>📦</span>
+                    <span>Sản phẩm</span>
+                </div>
+                <div class="menu-item">
+                    <span>🛒</span>
+                    <span>Đơn hàng</span>
+                    <span class="badge">5</span>
+                </div>
+                <div class="menu-item">
+                    <span>🔔</span>
+                    <span>Khuyến mãi</span>
+                </div>
+                
+                <div class="menu-title" style="margin-top: 24px;">QUẢN LÝ</div>
+                <div class="menu-item">
+                    <span>☐</span>
+                    <span>Báo cáo</span>
+                </div>
+                <div class="menu-item">
+                    <span>☐</span>
+                    <span>Nhân viên</span>
+                </div>
+                <div class="menu-item">
+                    <span>☐</span>
+                    <span>Cài đặt</span>
+                </div>
+            </div>
+            
+            <div class="user-profile">
+                <div class="user-avatar">GH</div>
+                <div class="user-name">GiaHuy</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <div class="header-left">
+                    <h1 class="header-title">Dashboard</h1>
+                    <input type="text" class="search-box" placeholder="Tìm kiếm...">
+                </div>
+                <div class="header-right">
+                    <span class="header-date">Thứ 5, 12, 2025</span>
+                    <button class="btn">WIREFRAME</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="welcome">
+                    <h2 class="welcome-title">Xin chào, GiaHuy!</h2>
+                    <p class="welcome-text">Tổng quan hoạt động kinh doanh hôm nay.</p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon blue">DT</div>
+                            <div class="stat-change">↑ 12.5%</div>
+                        </div>
+                        <div class="stat-value">125.8M</div>
+                        <div class="stat-label">Doanh thu tháng</div>
+                        <div class="stat-detail">Tháng trước: 111.8M</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon green">ĐH</div>
+                            <div class="stat-change">↑ 8.2%</div>
+                        </div>
+                        <div class="stat-value">348</div>
+                        <div class="stat-label">Đơn hàng tháng</div>
+                        <div class="stat-detail">Hoàn thành: 312 | Xử lý: 36</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon purple">KH</div>
+                            <div class="stat-change">↑ 18.3%</div>
+                        </div>
+                        <div class="stat-value">1,247</div>
+                        <div class="stat-label">Tổng khách hàng</div>
+                        <div class="stat-detail">Mới trong tháng: 89</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon orange">TB</div>
+                            <div class="stat-change">↑ 2.1%</div>
+                        </div>
+                        <div class="stat-value">362K</div>
+                        <div class="stat-label">Giá trị đơn TB</div>
+                        <div class="stat-detail">Tăng liên: 400k</div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Chart -->
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Biểu đồ doanh thu</h3>
+                            <div class="chart-buttons">
+                                <button>7 ngày</button>
+                                <button class="active">30 ngày</button>
+                                <button>90 ngày</button>
+                            </div>
+                        </div>
+                        <div class="chart">
+                            <div class="chart-bar" style="height: 60%;"></div>
+                            <div class="chart-bar" style="height: 75%;"></div>
+                            <div class="chart-bar" style="height: 55%;"></div>
+                            <div class="chart-bar" style="height: 80%;"></div>
+                            <div class="chart-bar" style="height: 45%;"></div>
+                            <div class="chart-bar" style="height: 85%;"></div>
+                            <div class="chart-bar" style="height: 40%;"></div>
+                            <div class="chart-bar" style="height: 70%;"></div>
+                            <div class="chart-bar" style="height: 50%;"></div>
+                            <div class="chart-bar" style="height: 90%;"></div>
+                            <div class="chart-bar" style="height: 55%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Thống kê nhanh</h3>
+                            <a href="#" class="card-action">Xem tất cả</a>
+                        </div>
+                        <div>
+                            <div class="quick-stat">
+                                <div class="quick-stat-left">
+                                    <div class="quick-stat-icon blue">🛒</div>
+                                    <div>
+                                        <div class="quick-stat-value">24</div>
+                                        <div class="quick-stat-label">Đơn hôm nay</div>
+                                    </div>
+                                </div>
+                                <div class="quick-stat-change">+18%</div>
+                            </div>
+                            <div class="quick-stat">
+                                <div class="quick-stat-left">
+                                    <div class="quick-stat-icon green">📊</div>
+                                    <div>
+                                        <div class="quick-stat-value">4.8</div>
+                                        <div class="quick-stat-label">Đánh giá TB</div>
+                                    </div>
+                                </div>
+                                <div class="quick-stat-change">+0.2</div>
+                            </div>
+                            <div class="quick-stat">
+                                <div class="quick-stat-left">
+                                    <div class="quick-stat-icon purple">👥</div>
+                                    <div>
+                                        <div class="quick-stat-value">68%</div>
+                                        <div class="quick-stat-label">Tỷ lệ quay lại</div>
+                                    </div>
+                                </div>
+                                <div class="quick-stat-change">+6%</div>
+                            </div>
+                            <div class="quick-stat">
+                                <div class="quick-stat-left">
+                                    <div class="quick-stat-icon orange">📦</div>
+                                    <div>
+                                        <div class="quick-stat-value">15</div>
+                                        <div class="quick-stat-label">Sản phẩm sắp hết</div>
+                                    </div>
+                                </div>
+                                <button class="btn" style="padding: 4px 8px; font-size: 11px;">Cảnh báo</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Đơn hàng gần đây</h3>
+                            <a href="#" class="card-action">Xem tất cả</a>
+                        </div>
+                        <div>
+                            <div class="order-item">
+                                <div class="order-left">
+                                    <div class="order-avatar">TL</div>
+                                    <div>
+                                        <div class="order-name">Trần Lan</div>
+                                        <div class="order-id">#DH001 · 3 SP</div>
+                                    </div>
+                                </div>
+                                <div class="order-right">
+                                    <div class="order-amount">850K</div>
+                                    <div class="order-status">Chờ</div>
+                                </div>
+                            </div>
+                            <div class="order-item">
+                                <div class="order-left">
+                                    <div class="order-avatar">NM</div>
+                                    <div>
+                                        <div class="order-name">Ngọc Mai</div>
+                                        <div class="order-id">#DH002 · 6 SP</div>
+                                    </div>
+                                </div>
+                                <div class="order-right">
+                                    <div class="order-amount">1.2M</div>
+                                    <div class="order-status">Giao</div>
+                                </div>
+                            </div>
+                            <div class="order-item">
+                                <div class="order-left">
+                                    <div class="order-avatar">HT</div>
+                                    <div>
+                                        <div class="order-name">Hồng Thắm</div>
+                                        <div class="order-id">#DH003 · 2 SP</div>
+                                    </div>
+                                </div>
+                                <div class="order-right">
+                                    <div class="order-amount">480K</div>
+                                    <div class="order-status">Xong</div>
+                                </div>
+                            </div>
+                            <div class="order-item">
+                                <div class="order-left">
+                                    <div class="order-avatar">PT</div>
+                                    <div>
+                                        <div class="order-name">Phương Thảo</div>
+                                        <div class="order-id">#DH004 · 1 SP</div>
+                                    </div>
+                                </div>
+                                <div class="order-right">
+                                    <div class="order-amount">320K</div>
+                                    <div class="order-status">Xong</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Products -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top sản phẩm</h3>
+                            <a href="#" class="card-action">Xem tất cả</a>
+                        </div>
+                        <div>
+                            <div class="product-item">
+                                <div class="product-rank">1</div>
+                                <div class="product-image"></div>
+                                <div class="product-info">
+                                    <div class="product-name">Serum Vitamin C</div>
+                                    <div class="product-category">Chăm sóc da</div>
+                                </div>
+                                <div class="product-stats">
+                                    <div class="product-sales">156</div>
+                                    <div class="product-revenue">28.8M</div>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-rank">2</div>
+                                <div class="product-image"></div>
+                                <div class="product-info">
+                                    <div class="product-name">Kem chống nắng</div>
+                                    <div class="product-category">Chống nắng</div>
+                                </div>
+                                <div class="product-stats">
+                                    <div class="product-sales">134</div>
+                                    <div class="product-revenue">22.3M</div>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-rank">3</div>
+                                <div class="product-image"></div>
+                                <div class="product-info">
+                                    <div class="product-name">Sữa rửa mặt</div>
+                                    <div class="product-category">Làm sạch</div>
+                                </div>
+                                <div class="product-stats">
+                                    <div class="product-sales">98</div>
+                                    <div class="product-revenue">14.7M</div>
+                                </div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-rank">4</div>
+                                <div class="product-image"></div>
+                                <div class="product-info">
+                                    <div class="product-name">Toner HA</div>
+                                    <div class="product-category">Chăm sóc da</div>
+                                </div>
+                                <div class="product-stats">
+                                    <div class="product-sales">87</div>
+                                    <div class="product-revenue">13.9M</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Schedule -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Lịch hôm nay</h3>
+                            <a href="#" class="card-action">+ Thêm</a>
+                        </div>
+                        <div>
+                            <div class="schedule-item">
+                                <div class="schedule-content">
+                                    <div class="schedule-time">09:00</div>
+                                    <div class="schedule-details">
+                                        <div class="schedule-title">📅 Họp team</div>
+                                        <div class="schedule-desc">Review KPI tuần</div>
+                                        <span class="schedule-tag">Cuộc họp</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-content">
+                                    <div class="schedule-time">11:00</div>
+                                    <div class="schedule-details">
+                                        <div class="schedule-title">📅 Nhập hàng mới</div>
+                                        <div class="schedule-desc">Lô Serum từ NCC</div>
+                                        <span class="schedule-tag">Kho hàng</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-content">
+                                    <div class="schedule-time">02:30</div>
+                                    <div class="schedule-details">
+                                        <div class="schedule-title">📅 Tư vấn VIP</div>
+                                        <div class="schedule-desc">Khách Ngọc Mai</div>
+                                        <span class="schedule-tag">Khách hàng</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="schedule-item">
+                                <div class="schedule-content">
+                                    <div class="schedule-time">04:00</div>
+                                    <div class="schedule-details">
+                                        <div class="schedule-title">📅 Flash sale</div>
+                                        <div class="schedule-desc">Khuyến mãi cuối tuần</div>
+                                        <span class="schedule-tag">Marketing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
