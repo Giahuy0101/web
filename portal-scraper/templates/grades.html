@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Bảng Điểm - UTH</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">📊 Portal UTH Dashboard</h1>
+            <ul class="nav-links">
+                <li><a href="/">Tổng Quan</a></li>
+                <li><a href="/grades">Chi Tiết Điểm</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="grades-section">
+            <h2>Chi Tiết Bảng Điểm</h2>
+            
+            <div class="filters">
+                <input type="text" id="searchBox" placeholder="🔍 Tìm kiếm môn học...">
+                <select id="semesterFilter">
+                    <option value="">Tất cả học kỳ</option>
+                </select>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="grades-table">
+                    <thead>
+                        <tr>
+                            <th>Mã Lớp</th>
+                            <th>Tên Môn</th>
+                            <th>Tín Chỉ</th>
+                            <th>Điểm QT</th>
+                            <th>Điểm CK</th>
+                            <th>Điểm TK</th>
+                            <th>GPA 4</th>
+                            <th>Chữ</th>
+                            <th>Xếp Loại</th>
+                            <th>Đạt</th>
+                            <th>Học Kỳ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gradesTableBody">
+                        <tr><td colspan="11" style="text-align: center; padding: 2rem;">Đang tải dữ liệu...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="table-info">
+                <p>Tổng: <span id="totalCount">0</span> môn học</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Portal UTH Scraper Dashboard</p>
+    </footer>
+
+    <script>
+        let allGrades = [];
+
+        fetch('/api/grades')
+            .then(res => res.json())
+            .then(data => {
+                allGrades = data;
+                
+                // Populate semester filter
+                const semesters = [...new Set(data.map(g => g.semester))].sort().reverse();
+                const semesterFilter = document.getElementById('semesterFilter');
+                semesters.forEach(sem => {
+                    const option = document.createElement('option');
+                    option.value = sem;
+                    option.textContent = sem;
+                    semesterFilter.appendChild(option);
+                });
+
+                renderTable(data);
+            })
+            .catch(err => {
+                console.error('Error fetching grades:', err);
+                document.getElementById('gradesTableBody').innerHTML = 
+                    '<tr><td colspan="11" style="color: red; text-align: center;">Lỗi tải dữ liệu</td></tr>';
+            });
+
+        function renderTable(data) {
+            const tbody = document.getElementById('gradesTableBody');
+            const totalCount = document.getElementById('totalCount');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 2rem;">Không có dữ liệu</td></tr>';
+                totalCount.textContent = '0';
+                return;
+            }
+
+            tbody.innerHTML = data.map(grade => `
+                <tr class="grade-row">
+                    <td><code>${grade.course_code}</code></td>
+                    <td>${grade.course_name}</td>
+                    <td class="center">${grade.credits || '-'}</td>
+                    <td class="center">${grade.process_score || '-'}</td>
+                    <td class="center">${grade.final_score || '-'}</td>
+                    <td class="center score-cell">${grade.total_score || '-'}</td>
+                    <td class="center">${grade.gpa_4 || '-'}</td>
+                    <td class="center"><span class="grade-badge">${grade.letter_grade || '-'}</span></td>
+                    <td class="center">${grade.ranking || '-'}</td>
+                    <td class="center">${grade.passed ? '✅ Đạt' : '❌ Không'}</td>
+                    <td class="center semester-cell">${grade.semester}</td>
+                </tr>
+            `).join('');
+            
+            totalCount.textContent = data.length;
+        }
+
+        document.getElementById('searchBox').addEventListener('input', filterTable);
+        document.getElementById('semesterFilter').addEventListener('change', filterTable);
+
+        function filterTable() {
+            const term = document.getElementById('searchBox').value.toLowerCase();
+            const semester = document.getElementById('semesterFilter').value;
+            
+            const filtered = allGrades.filter(g => 
+                (g.course_name.toLowerCase().includes(term) || g.course_code.includes(term)) &&
+                (!semester || g.semester === semester)
+            );
+            
+            renderTable(filtered);
+        }
+    </script>
+</body>
+</html>

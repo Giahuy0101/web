@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Bảng Điểm UTH</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">📊 Portal UTH Dashboard</h1>
+            <ul class="nav-links">
+                <li><a href="/">Tổng Quan</a></li>
+                <li><a href="/grades">Chi Tiết Điểm</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard">
+            <h2>Tổng Quan Bảng Điểm</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>📚 Tổng Số Môn</h3>
+                    <p class="stat-value">{{ total_courses }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>⭐ Điểm Trung Bình</h3>
+                    <p class="stat-value">{{ avg_score }}/10</p>
+                </div>
+                <div class="stat-card">
+                    <h3>✅ Môn Đạt</h3>
+                    <p class="stat-value">{{ passed_count }}</p>
+                </div>
+                <div class="stat-card">
+                    <h3>📅 Số Học Kỳ</h3>
+                    <p class="stat-value">{{ semesters }}</p>
+                </div>
+            </div>
+
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h3>Điểm Theo Học Kỳ</h3>
+                    <canvas id="semesterChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Top 5 Môn Điểm Cao</h3>
+                    <div id="topCourses" class="top-courses-list"></div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Phân Bố Điểm Chữ</h3>
+                    <canvas id="gradeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Portal UTH Scraper Dashboard</p>
+    </footer>
+
+    <script>
+        // Fetch stats
+        fetch('/api/stats')
+            .then(res => res.json())
+            .then(data => {
+                // Semester Chart
+                const semesterCtx = document.getElementById('semesterChart').getContext('2d');
+                new Chart(semesterCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.semester_stats.map(s => s.semester),
+                        datasets: [{
+                            label: 'Điểm Trung Bình',
+                            data: data.semester_stats.map(s => parseFloat(s.avg_score).toFixed(2)),
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { display: true }
+                        },
+                        scales: {
+                            y: { beginAtZero: true, max: 10 }
+                        }
+                    }
+                });
+
+                // Top Courses
+                const topCoursesHtml = data.top_courses
+                    .map((course, idx) => `
+                        <div class="course-item">
+                            <span class="rank">#${idx + 1}</span>
+                            <span class="name">${course.course_name.substring(0, 40)}</span>
+                            <span class="score">${course.total_score} (${course.letter_grade})</span>
+                        </div>
+                    `).join('');
+                document.getElementById('topCourses').innerHTML = topCoursesHtml;
+
+                // Grade Distribution
+                const gradeCtx = document.getElementById('gradeChart').getContext('2d');
+                new Chart(gradeCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: data.grade_distribution.map(g => g.letter_grade),
+                        datasets: [{
+                            data: data.grade_distribution.map(g => g.count),
+                            backgroundColor: [
+                                '#27ae60', '#f39c12', '#e74c3c', '#3498db', '#9b59b6', '#1abc9c'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            })
+            .catch(err => console.error('Error fetching stats:', err));
+    </script>
+</body>
+</html>

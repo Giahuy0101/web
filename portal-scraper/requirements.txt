@@ -1,0 +1,8 @@
+selenium==4.16.0
+beautifulsoup4==4.12.2
+psycopg2-binary==2.9.9
+webdriver-manager==4.0.1
+python-dotenv==1.0.0
+flask==3.0.0
+gunicorn==21.2.0
+undetected-chromedriver==3.5.4

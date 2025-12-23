@@ -287,8 +287,8 @@
         })();
 
         // INIT
-        const SPHERE_COLORS = [0xffd700, 0xff0000, 0xff8c00];
-        const CUBE_COLORS = [0xffd700, 0x006400, 0xffffff];
+        const SPHERE_COLORS = [0xffd700, 0xff0000, 0xff4500, 0xff1493, 0x4169e1, 0xffffff];
+        const CUBE_COLORS = [0xffd700, 0x228b22, 0x006400, 0xffffff, 0xff6347];
 
         [0, 1].forEach(idx => {
             const count = counts[idx];
@@ -312,26 +312,27 @@
         const starMat = new THREE.MeshStandardMaterial({
             color: 0xffd700,
             emissive: 0xffd700,
-            emissiveIntensity: 1.2,
+            emissiveIntensity: 1.5,
             metalness: 1,
             roughness: 0
         });
-        const starGeo = new THREE.OctahedronGeometry(1.5, 0);
+        const starGeo = new THREE.OctahedronGeometry(1.8, 0);
         const star = new THREE.Mesh(starGeo, starMat);
         star.position.set(0, treeBase + treeH - 2, 0);
         scene.add(star);
 
-        const sPartGeo = new THREE.OctahedronGeometry(0.2, 0);
-        const starPartMesh = new THREE.InstancedMesh(sPartGeo, starMat, 50);
+        const sPartGeo = new THREE.OctahedronGeometry(0.25, 0);
+        const starPartMesh = new THREE.InstancedMesh(sPartGeo, starMat, 80);
         scene.add(starPartMesh);
 
         const starDummy = new THREE.Object3D();
-        for (let i = 0; i < 50; i++) {
-            const r = 2 + Math.random();
+        for (let i = 0; i < 80; i++) {
+            const r = 2.5 + Math.random() * 1.5;
+            const angle = (i / 80) * Math.PI * 2;
             starDummy.position.set(
-                (Math.random() - 0.5) * r,
-                (Math.random() - 0.5) * r + 14,
-                (Math.random() - 0.5) * r
+                Math.cos(angle) * r + (Math.random() - 0.5) * 0.5,
+                (Math.random() - 0.5) * 1 + 14,
+                Math.sin(angle) * r + (Math.random() - 0.5) * 0.5
             );
             starDummy.updateMatrix();
             starPartMesh.setMatrixAt(i, starDummy.matrix);
@@ -350,9 +351,9 @@
         snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPos, 3));
         const snowMat = new THREE.PointsMaterial({
             color: 0xffffff,
-            size: 0.3,
+            size: 0.35,
             transparent: true,
-            opacity: 0.7
+            opacity: 0.8
         });
         const snow = new THREE.Points(snowGeo, snowMat);
         scene.add(snow);
@@ -370,9 +371,9 @@
         gGeo.setAttribute('position', new THREE.BufferAttribute(gPos, 3));
         const gMat = new THREE.PointsMaterial({
             color: 0xffffff,
-            size: 0.2,
+            size: 0.25,
             transparent: true,
-            opacity: 0.6
+            opacity: 0.7
         });
         const ground = new THREE.Points(gGeo, gMat);
         scene.add(ground);
