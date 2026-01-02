@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lời Nhắn Đặc Biệt</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 119, 198, 0.3), transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(138, 201, 255, 0.3), transparent 50%);
+            animation: gradientMove 15s ease infinite;
+            z-index: 0;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            background: rgba(20, 20, 30, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 60px 50px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .title {
+            font-size: 2.8em;
+            color: #ffffff;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .divider {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            margin: 30px auto;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+            border-radius: 2px;
+        }
+
+        .question-box {
+            margin: 50px 0;
+            padding: 40px 30px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 20px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(102, 126, 234, 0.2), 
+                transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .question-text {
+            font-size: 1.4em;
+            color: #ffffff;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .typing-text .char {
+            display: inline;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .typing-text .char:nth-child(4n+1) {
+            color: #8ac9ff;
+        }
+
+        .typing-text .char:nth-child(4n+2) {
+            color: #ffffff;
+        }
+
+        .typing-text .char:nth-child(4n+3) {
+            color: #b794f6;
+        }
+
+        .typing-text .char:nth-child(4n) {
+            color: #ffffff;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        button {
+            border: none;
+            border-radius: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.1em;
+            padding: 18px 45px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .yes-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .yes-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .yes-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .no-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .no-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .response-container {
+            display: none;
+            margin-top: 40px;
+            padding: 35px;
+            background: rgba(102, 126, 234, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(102, 126, 234, 0.4);
+        }
+
+        .response-container.show {
+            display: block;
+            animation: fadeInScale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .response-title {
+            font-size: 1.8em;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .response-text {
+            font-size: 1.15em;
+            color: #ffffff;
+            line-height: 1.8;
+        }
+
+        .image-carousel {
+            display: none;
+            margin-top: 50px;
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 500px;
+            perspective: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .image-carousel.show {
+            display: block;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-image,
+        .carousel-video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            object-fit: cover;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .carousel-image.active,
+        .carousel-video.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+            z-index: 3;
+        }
+
+        .carousel-image.exit,
+        .carousel-video.exit {
+            animation: slideOutRight 0.6s forwards;
+        }
+
+        @keyframes slideOutRight {
+            to {
+                transform: translate(200%, -50%) scale(0.7) rotateY(45deg);
+                opacity: 0;
+            }
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+            }
+
+            .title {
+                font-size: 2em;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .image-carousel {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">Lời Nhắn Đặc Biệt</div>
+            <div class="divider"></div>
+            <div class="subtitle">Dành cho Lê Hữu Phát</div>
+        </div>
+
+        <div class="question-box">
+            <div class="question-text">
+                <span class="typing-text"></span>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="yes-btn" onclick="handleYes()">Đồng ý</button>
+            <button class="no-btn" onclick="handleNo()">Để anh suy nghĩ thêm</button>
+        </div>
+
+        <div class="response-container" id="response">
+            <div class="response-title">Cảm ơn em ❤️</div>
+            <div class="response-text">
+                Anh sẽ cố gắng để mỗi ngày bên em đều ý nghĩa và đáng nhớ. Cảm ơn em vì đã cho anh cơ hội này.
+            </div>
+        </div>
+
+        <div class="image-carousel" id="carousel">
+            <div class="carousel-container" id="carouselContainer">
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Gửi với chân thành ✨</p>
+        </div>
+    </div>
+
+    <script>
+        const text = "Em có sẵn sàng cho anh cơ hội được đồng hành cùng em không?";
+        const typingElement = document.querySelector('.typing-text');
+        let index = 0;
+
+        function typeText() {
+            if (index < text.length) {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = text.charAt(index) === ' ' ? '\u00A0' : text.charAt(index);
+                span.style.animationDelay = `${index * 0.05}s`;
+                typingElement.appendChild(span);
+                index++;
+                setTimeout(typeText, 50);
+            }
+        }
+
+        setTimeout(typeText, 500);
+
+        // Thêm link ảnh/video của bạn vào đây
+        // Ảnh trước, video sau
+        const media = [
+            { type: 'image', src: 'anh1.jpg' },
+            { type: 'image', src: 'anh2.jpg' },
+            { type: 'image', src: 'anh3.jpg' },
+            { type: 'image', src: 'photo_9.jpg' },
+            { type: 'image', src: 'master_photo.jpg' },
+            { type: 'image', src: 'photo_3.jpg' },
+            { type: 'image', src: 'photo_8.jpg' },
+            { type: 'image', src: 'photo_1.jpg' },
+            { type: 'video', src: 'IMG_3427.MOV' },
+            { type: 'video', src: 'video_8.mp4' },
+            { type: 'video', src: 'video_9.mp4' }
+        ];
+
+        let currentIndex = 0;
+        let carouselInterval;
+
+        function handleYes() {
+            document.getElementById('response').classList.add('show');
+            createParticles();
+            setTimeout(startCarousel, 1000);
+        }
+
+        function handleNo() {
+            alert('Anh hiểu, và anh sẽ tôn trọng quyết định của em.');
+        }
+
+        function startCarousel() {
+            const carousel = document.getElementById('carousel');
+            carousel.classList.add('show');
+            
+            if (media.length === 0) return;
+            
+            currentIndex = 0;
+            showMedia(currentIndex);
+            
+            carouselInterval = setInterval(() => {
+                nextMedia();
+            }, 3000);
+        }
+
+        function showMedia(index) {
+            const container = document.getElementById('carouselContainer');
+            const existingMedia = container.querySelectorAll('.carousel-image, .carousel-video');
+            
+            existingMedia.forEach(elem => {
+                elem.classList.remove('active');
+                elem.classList.add('exit');
+                if (elem.tagName === 'VIDEO') {
+                    elem.pause();
+                }
+                setTimeout(() => elem.remove(), 600);
+            });
+            
+            const item = media[index];
+            let element;
+            
+            if (item.type === 'video') {
+                element = document.createElement('video');
+                element.src = item.src;
+                element.className = 'carousel-video active';
+                element.autoplay = true;
+                element.muted = true;
+                element.loop = true;
+                element.playsInline = true;
+            } else {
+                element = document.createElement('img');
+                element.src = item.src;
+                element.className = 'carousel-image active';
+            }
+            
+            container.appendChild(element);
+        }
+
+        function nextMedia() {
+            currentIndex = (currentIndex + 1) % media.length;
+            showMedia(currentIndex);
+        }
+
+        function createParticles() {
+            const colors = ['#667eea', '#764ba2', '#8ac9ff', '#b794f6'];
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.style.position = 'fixed';
+                    particle.style.width = '8px';
+                    particle.style.height = '8px';
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.borderRadius = '50%';
+                    particle.style.left = '50%';
+                    particle.style.top = '50%';
+                    particle.style.pointerEvents = 'none';
+                    particle.style.zIndex = '9999';
+                    particle.style.boxShadow = `0 0 15px ${colors[Math.floor(Math.random() * colors.length)]}`;
+                    
+                    const angle = (Math.PI * 2 * i) / 40;
+                    const velocity = 4 + Math.random() * 3;
+                    
+                    document.body.appendChild(particle);
+                    
+                    let posX = 0, posY = 0;
+                    const animate = () => {
+                        posX += Math.cos(angle) * velocity;
+                        posY += Math.sin(angle) * velocity;
+                        particle.style.transform = `translate(${posX}px, ${posY}px)`;
+                        particle.style.opacity = 1 - (Math.abs(posX) + Math.abs(posY)) / 400;
+                        
+                        if (Math.abs(posX) < 400 && Math.abs(posY) < 400) {
+                            requestAnimationFrame(animate);
+                        } else {
+                            particle.remove();
+                        }
+                    };
+                    animate();
+                }, i * 20);
+            }
+        }
+    </script>
+</body>
+</html>
