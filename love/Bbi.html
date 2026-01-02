@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lê Hữu Phát</title>
+    <title>Lời Nhắn Đặc Biệt</title>
     <style>
         * {
             margin: 0;
@@ -529,7 +529,9 @@
 <body>
     <div class="container">
         <div class="header">
+            <div class="title">Lời Nhắn Đặc Biệt</div>
             <div class="divider"></div>
+            <div class="subtitle">Dành cho Lê Hữu Phát</div>
         </div>
 
         <div class="question-box">
@@ -557,7 +559,7 @@
 
         <div class="final-message" id="finalMessage">
             <div class="final-message-text">
-                Cảm ơn em yêu nhiều,<br>Hy vọng mình sẽ bên nhau dài lâu nhé bbi❤️
+                Cảm ơn em yêu nhiều,<br>hi vọng mình sẽ bên nhau dài lâu nhé! ❤️
             </div>
         </div>
 
@@ -565,11 +567,12 @@
 
     <!-- Audio Element -->
     <audio id="backgroundMusic" loop>
-        <source src="JUSTSAYHELLO.mp4" type="audio/mp4">
+        <source src="justsayhello.mp4" type="audio/mp4">
+        <source src="justsayhello.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        const text = "Cho phép anh bước vào cuộc sống của em nhé bbi 💕 ?";
+        const text = "Em cho phép anh bước vào cuộc sống của em nhé bbi ?";
         const typingElement = document.querySelector('.typing-text');
         let index = 0;
 
@@ -652,6 +655,13 @@
             // Bật nhạc nền
             const music = document.getElementById('backgroundMusic');
             music.volume = 0.5; // Âm lượng 50%
+            
+            // Tự động phát lại khi hết
+            music.addEventListener('ended', function() {
+                this.currentTime = 0;
+                this.play();
+            });
+            
             music.play().catch(err => {
                 console.log('Không thể tự động phát nhạc:', err);
             });
@@ -665,7 +675,19 @@
 
         function scheduleNextMedia() {
             const currentItem = media[currentIndex];
-            const delay = currentItem.type === 'video' ? 8000 : 2000; // Video 8s, ảnh 2s
+            let delay;
+            
+            if (currentItem.type === 'video') {
+                // Đợi video load xong rồi lấy độ dài thực
+                const videoElement = document.querySelector('.carousel-video.active');
+                if (videoElement && videoElement.duration) {
+                    delay = (videoElement.duration * 1000) + 500; // Thời gian video + 0.5s buffer
+                } else {
+                    delay = 10000; // Mặc định 10s nếu chưa load được
+                }
+            } else {
+                delay = 2000; // Ảnh 2s
+            }
             
             carouselTimer = setTimeout(() => {
                 nextMedia();
@@ -719,8 +741,9 @@
                 element.className = 'carousel-video';
                 element.autoplay = true;
                 element.muted = true;
-                element.loop = true;
+                element.loop = false; // Không loop để video chạy hết
                 element.playsInline = true;
+                element.preload = 'auto'; // Tải trước video
             } else {
                 element = document.createElement('img');
                 element.src = item.src;
