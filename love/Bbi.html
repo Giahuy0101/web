@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lời Nhắn Đặc Biệt</title>
+    <title>My bbi</title>
     <style>
         * {
             margin: 0;
@@ -367,6 +367,7 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%) scale(0.8);
+            background: #000;
         }
 
         .carousel-image.active,
@@ -529,9 +530,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="title">Lời Nhắn Đặc Biệt</div>
             <div class="divider"></div>
-            <div class="subtitle">Dành cho Lê Hữu Phát</div>
         </div>
 
         <div class="question-box">
@@ -686,7 +685,7 @@
                     delay = 10000; // Mặc định 10s nếu chưa load được
                 }
             } else {
-                delay = 2000; // Ảnh 2s
+                delay = 4000; // Ảnh 4s (tăng từ 2s)
             }
             
             carouselTimer = setTimeout(() => {
@@ -741,21 +740,49 @@
                 element.className = 'carousel-video';
                 element.autoplay = true;
                 element.muted = true;
-                element.loop = false; // Không loop để video chạy hết
+                element.loop = false;
                 element.playsInline = true;
-                element.preload = 'auto'; // Tải trước video
+                element.preload = 'auto';
+                element.setAttribute('webkit-playsinline', 'true'); // Cho iOS
+                element.setAttribute('x5-playsinline', 'true'); // Cho Android WeChat
+                element.setAttribute('x5-video-player-type', 'h5'); // Cho Android WeChat
+                element.setAttribute('x5-video-player-fullscreen', 'false');
+                
+                // Đảm bảo video được play sau khi load
+                element.addEventListener('loadedmetadata', function() {
+                    this.play().catch(e => console.log('Video play error:', e));
+                });
+                
+                element.addEventListener('canplay', function() {
+                    this.play().catch(e => console.log('Video play error:', e));
+                });
             } else {
                 element = document.createElement('img');
                 element.src = item.src;
                 element.className = 'carousel-image';
+                
+                // Đợi ảnh load xong mới hiển thị
+                element.addEventListener('load', function() {
+                    setTimeout(() => {
+                        this.classList.add('active');
+                    }, 50);
+                });
+                
+                // Nếu ảnh load lỗi
+                element.addEventListener('error', function() {
+                    console.log('Lỗi load ảnh:', item.src);
+                    this.classList.add('active');
+                });
             }
             
             carouselCont.appendChild(element);
             
-            // Trigger animation sau khi element được thêm vào DOM
-            setTimeout(() => {
-                element.classList.add('active');
-            }, 50);
+            // Chỉ trigger animation cho video
+            if (item.type === 'video') {
+                setTimeout(() => {
+                    element.classList.add('active');
+                }, 50);
+            }
         }
 
         function createParticles() {
